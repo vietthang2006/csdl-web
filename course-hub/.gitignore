@@ -1,0 +1,8 @@
+# Virtual venv
+backend/.env
+
+#pycache
+__pycache__/
+
+#vscode
+../.vscode/
