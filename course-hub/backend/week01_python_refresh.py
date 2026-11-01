@@ -123,4 +123,14 @@ print(enroll_student("22000003", "INT2204"))
 # Lớp đầy
 print(enroll_student("22000002", "INT2204"))
 
+"""
+Mô tả: 
+(False, 'Sinh viên không tồn tại')
+(False, 'Hoc phan khong ton tai')
+(False, 'Sinh vien da dang ky hoc phan nay')
+(False, 'Lop da du so luong')
+(True, 'Dang ki thanh cong')
+(False, 'Lop da du so luong')
+"""
+
 #3. Lưu thay đổi bằng Git/GitHub
