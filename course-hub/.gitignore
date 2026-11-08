@@ -6,3 +6,9 @@ __pycache__/
 
 #vscode
 ../.vscode/
+
+#frontend
+frontend/.env
+frontend/.env.local
+node_modules/
+dist/
