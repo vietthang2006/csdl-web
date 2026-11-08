@@ -1,0 +1,349 @@
+{
+  "info": {
+    "_postman_id": "b4e8c1a2-3f5d-4e9b-8a7c-1d2e3f4a5b6c",
+    "name": "CourseHub API - Buoi 4 - Bai 1",
+    "description": "Bo suu tap API kiem thu CourseHub Buoi 4 - Bai 1: Doc lich su dang ky (GET /enrollment-events) bao gom ca truong hop co du lieu va khong co du lieu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Lay danh sach su kien mac dinh",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response la mang JSON\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(Array.isArray(data)).to.be.true;",
+              "});",
+              "pm.test(\"So ban ghi mac dinh khong qua 20\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.length).to.be.at.most(20);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - Loc theo student_id (Co du lieu)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Co it nhat 1 ban ghi cua sinh vien 22000004\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.length).to.be.greaterThan(0);",
+              "    pm.expect(data.every(e => e.student_id === \"22000004\")).to.be.true;",
+              "});",
+              "pm.test(\"Cac truong bat buoc deu ton tai\", () => {",
+              "    const item = pm.response.json()[0];",
+              "    pm.expect(item).to.have.property(\"id\");",
+              "    pm.expect(item).to.have.property(\"student_id\");",
+              "    pm.expect(item).to.have.property(\"class_section_id\");",
+              "    pm.expect(item).to.have.property(\"event_type\");",
+              "    pm.expect(item).to.have.property(\"occurred_at\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?student_id=22000004",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "student_id",
+              "value": "22000004"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - Loc theo student_id (Khong co du lieu)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Tra ve mang rong [] khi khong co du lieu\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(Array.isArray(data)).to.be.true;",
+              "    pm.expect(data.length).to.eql(0);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?student_id=99999999",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "student_id",
+              "value": "99999999"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - Loc theo event_type CREATED",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Tat ca su kien tra ve deu co event_type CREATED\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.length).to.be.greaterThan(0);",
+              "    pm.expect(data.every(e => e.event_type === \"CREATED\")).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?event_type=CREATED&limit=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "event_type",
+              "value": "CREATED"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - Loc theo event_type CANCELLED",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Tat ca su kien tra ve deu co event_type CANCELLED\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.length).to.be.greaterThan(0);",
+              "    pm.expect(data.every(e => e.event_type === \"CANCELLED\")).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?event_type=CANCELLED&limit=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "event_type",
+              "value": "CANCELLED"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06 - Phan trang (skip va limit)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"So ban ghi tra ve khong vuot qua limit\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.length).to.be.at.most(5);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?skip=2&limit=5",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "skip",
+              "value": "2"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07 - Ca loi: event_type khong hop le (400 Bad Request)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 400 Bad Request\", () => {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "pm.test(\"Thong bao loi dung quy dinh\", () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.detail).to.include(\"CREATED\");",
+              "    pm.expect(data.detail).to.include(\"CANCELLED\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?event_type=INVALID",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "event_type",
+              "value": "INVALID"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "08 - Ca loi: limit vuot qua 100 (422 Unprocessable Entity)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code la 422 Unprocessable Entity\", () => {",
+              "    pm.response.to.have.status(422);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/enrollment-events?limit=101",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "enrollment-events"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "101"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

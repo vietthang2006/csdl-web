@@ -407,3 +407,46 @@ def list_courses_limit(
         rows = connection.execute(text(sql), parameters).mappings().all()
 
     return [dict(row) for row in rows]
+
+
+@app.get("/enrollment-events")
+def list_enrollment_events(
+    student_id: str | None = Query(default=None, min_length=8, max_length=8),
+    event_type: str | None = Query(default=None),
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=20, ge=1, le=100),
+) -> list[dict[str, object]]:
+    # 1. Validate event_type nếu người dùng truyền vào
+    if event_type is not None and event_type not in ("CREATED", "CANCELLED"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="event_type phai la 'CREATED' hoac 'CANCELLED'",
+        )
+
+    # 2. Xây dựng câu lệnh SQL cơ sở và dictionary bind parameters
+    sql = """
+        SELECT id, student_id, class_section_id, event_type, source, dataset, occurred_at
+        FROM enrollment_events
+        WHERE 1 = 1
+    """
+    parameters: dict[str, object] = {
+        "skip": skip,
+        "limit": limit,
+    }
+
+    # 3. Gắn thêm điều kiện lọc an toàn bằng bind parameters
+    if student_id is not None:
+        sql += " AND student_id = :student_id"
+        parameters["student_id"] = student_id
+
+    if event_type is not None:
+        sql += " AND event_type = :event_type"
+        parameters["event_type"] = event_type
+
+    # 4. Sắp xếp ổn định và phân trang
+    sql += " ORDER BY occurred_at DESC, id DESC OFFSET :skip LIMIT :limit"
+
+    with engine.connect() as connection:
+        rows = connection.execute(text(sql), parameters).mappings().all()
+
+    return [dict(row) for row in rows]
