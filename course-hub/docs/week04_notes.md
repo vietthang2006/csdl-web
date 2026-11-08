@@ -15,6 +15,7 @@ Planning:
 Planning Time: 0.875 ms
 Execution Time: 5.871 ms
 ```
+
 # CourseHub - Buoi 4
 
 - Migration 001: enrollment_events.
@@ -23,6 +24,3 @@ Execution Time: 5.871 ms
 - Concurrency test: 1 request 201, 1 request 409.
 - Performance data: 100000 rows, dataset=performance.
 - Index: idx_enrollment_events_dataset_student_time.
-- Ghi lai scan type va Execution Time truoc/sau o day.
-
-Khong commit backend/.env.
