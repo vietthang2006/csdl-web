@@ -6,8 +6,8 @@ from fastapi import FastAPI, HTTPException, Query, Response, status
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from database import engine
-from schemas import EnrollmentCreate, CapacityUpdate
+from .database import engine
+from .schemas import EnrollmentCreate, CapacityUpdate
 
 from fastapi.middleware.cors import CORSMiddleware
 
