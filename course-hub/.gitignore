@@ -1,8 +1,15 @@
 # Virtual venv
 backend/.env
+backend/.env.docker
 
 #pycache
 __pycache__/
 
 #vscode
 ../.vscode/
+
+#frontend
+frontend/.env
+frontend/.env.local
+node_modules/
+dist/
